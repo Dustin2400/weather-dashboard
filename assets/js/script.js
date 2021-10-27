@@ -18,6 +18,8 @@ function searchHandler (event) {
         }
     city = capSentence.join(" ");
     fetchInfo(city);
+    createSearchHistoryButton(city);
+    
 }
 
 function fetchInfo(city) {
@@ -30,8 +32,6 @@ function fetchInfo(city) {
                 searchHistory.push({
                     city: urb
                 });
-                createSearchHistoryButton(city);
-                
                 var lat = data.coord.lat;
                 var long = data.coord.lon;
                 var advancedApiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat="+lat+"&lon="+long+"&units=imperial&appid=0d3b4e2432d34a50dd223536499db182";
