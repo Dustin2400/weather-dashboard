@@ -7,7 +7,7 @@ body {
     align-content: flex-start;
     height: 100%;
     background-image: linear-gradient(-25deg, #b5179e, #3a0ca3, #4361ee);
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-end;
 }
 header {
@@ -51,6 +51,7 @@ h2 {
     background-color: #4361ee;
     border-radius: 5px;
     margin: 5px 0;
+    font-family: 'impact', sans-serif;
 }
 #forecast{
     background-color: #3f37c9;
@@ -111,6 +112,7 @@ span {
     color: #f72585;
     border-radius: 10px;
     padding: 0 10px;
+    font-family: 'impact', sans-serif;
 }
 .card-icon {
     font-size: 37px;
@@ -119,4 +121,60 @@ span {
     color: #f72585;
     font-size: 15px;
     font-family: 'impact', sans-serif;
+}
+.history {
+    border-top:#3a0ca3 solid 2px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.historical-button{
+    padding: 10px;
+    width: 88%;
+    color:#f72585 ;
+    background-color:#3a0ca3 ;
+    border-radius: 5px;
+    margin: 5px 0;
+    font-family: 'impact', sans-serif;
+}
+
+@media screen and (max-width: 980px) {
+    body {
+        justify-content: center;
+        background-image: linear-gradient(90deg, #7209b7, #3a0ca3, #4361ee);
+
+
+    }
+    .sidebar{
+        width: 100%;
+        justify-content: space-around;
+    }
+    #city{
+        width: 30%;
+    }
+    h2 {
+        width: 30%;
+        margin: 0;
+        text-align: center;
+    }
+    #search {
+        width: 30%;
+    }
+    .historical-button {
+        width: 30%;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+    .five-day {
+        flex-wrap: wrap;
+    }
+    .card {
+        width: 25%;
+    }
+    h2 {
+        font-size: 20px;
+    }
 }

@@ -1,15 +1,37 @@
 var inputEl = document.querySelector("#city");
 var searchFormEl = document.querySelector("#search");
 var fiveDayEl = document.createElement("div");
+var historyEl = document.querySelector(".history");
+var searchHistory = [];
 
 function searchHandler (event) {
     event.preventDefault();
     var city = inputEl.value.trim();
+    var capSentence = [];
+    var sentence = city.split(" ");
+    for(i=0; i<sentence.length; i++) {
+        var word = sentence[i];
+        word = word.split('')
+        word[0] = word[0].toUpperCase();
+        word = word.join('');
+        capSentence.push(word);
+        }
+    city = capSentence.join(" ");
+    fetchInfo(city);
+}
+
+function fetchInfo(city) {
     var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=0d3b4e2432d34a50dd223536499db182";
     fetch(apiUrl).then(function(response){
         if(response.ok) {
             response.json().then(function(data) {
                 console.log(data);
+                var urb = city;
+                searchHistory.push({
+                    city: urb
+                });
+                createSearchHistoryButton(city);
+                
                 var lat = data.coord.lat;
                 var long = data.coord.lon;
                 var advancedApiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat="+lat+"&lon="+long+"&units=imperial&appid=0d3b4e2432d34a50dd223536499db182";
@@ -19,8 +41,43 @@ function searchHandler (event) {
                     });
                 });
             });
+        } else {
+            alert("Nonexistent City");
         }
     });
+}
+
+function createSearchHistoryButton(city){
+    
+    saveCities();
+    displayCities();
+}
+
+function saveCities() {
+    localStorage.setItem("cities", JSON.stringify(searchHistory));
+}
+
+function displayCities() {
+    historyEl.innerHTML = "";
+    searchHistory = JSON.parse(localStorage.getItem("cities"));
+    if (!searchHistory){
+        searchHistory=[];
+    }
+    console.log(searchHistory);
+    for(i=0; i<searchHistory.length; i++) {
+        var buttonEl = document.createElement("button");
+        buttonEl.classList = "historical-button"
+        var city = searchHistory[i].city;
+        buttonEl.innerHTML = city;
+        buttonEl.addEventListener("click", historicalButtonHandler);
+        historyEl.appendChild(buttonEl);
+    }
+}
+
+function historicalButtonHandler(event) {
+    event.preventDefault;
+    var city = this.innerHTML;
+    fetchInfo(city);
 }
 
 function createForecast(data, city) {
@@ -218,3 +275,5 @@ function getUvIntensity(uvi) {
 
 
 searchFormEl.addEventListener("click", searchHandler);
+
+displayCities();
