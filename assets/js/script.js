@@ -18,7 +18,7 @@ function searchHandler (event) {
         }
     city = capSentence.join(" ");
     fetchInfo(city);
-    createSearchHistoryButton(city);
+    displayCities();
     
 }
 
@@ -28,10 +28,7 @@ function fetchInfo(city) {
         if(response.ok) {
             response.json().then(function(data) {
                 console.log(data);
-                var urb = city;
-                searchHistory.push({
-                    city: urb
-                });
+                saveCities(city);
                 var lat = data.coord.lat;
                 var long = data.coord.lon;
                 var advancedApiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat="+lat+"&lon="+long+"&units=imperial&appid=0d3b4e2432d34a50dd223536499db182";
@@ -47,14 +44,28 @@ function fetchInfo(city) {
     });
 }
 
-function createSearchHistoryButton(city){
-    
-    saveCities();
-    displayCities();
-}
 
-function saveCities() {
-    localStorage.setItem("cities", JSON.stringify(searchHistory));
+
+function saveCities(city) {
+    
+    var urb = city;
+    searchHistory = JSON.parse(localStorage.getItem("cities"));
+    if (!searchHistory){
+        searchHistory=[];
+    }
+    var alreadyThere = false;
+    for (i=0; i<searchHistory.length; i++) {
+        if (searchHistory[i].city === city) {
+            alreadyThere = true
+        }
+    }
+    console.log(alreadyThere)
+    if (!alreadyThere) {
+        searchHistory.push({
+            city: urb
+        });
+        localStorage.setItem("cities", JSON.stringify(searchHistory));
+    }
 }
 
 function displayCities() {
@@ -78,6 +89,7 @@ function historicalButtonHandler(event) {
     event.preventDefault;
     var city = this.innerHTML;
     fetchInfo(city);
+    displayCities();
 }
 
 function createForecast(data, city) {
@@ -112,6 +124,8 @@ function createForecast(data, city) {
     dataEl.appendChild(uvEl);
 
     createFiveDay(data);
+    
+    displayCities();
 }
 
 
