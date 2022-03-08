@@ -178,3 +178,13 @@ span {
         font-size: 20px;
     }
 }
+
+@media screen and (max-width: 480px) {
+    .forecast-icon {
+        font-size: 100px;
+    }
+    .card h3 {
+        font-size: 14px;
+        font-weight: 200;
+    }
+}
